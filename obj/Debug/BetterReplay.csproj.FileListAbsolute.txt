@@ -1,0 +1,8 @@
+T:\better-replay\BetterReplay\bin\Debug\BetterReplay.dll
+T:\better-replay\BetterReplay\bin\Debug\BetterReplay.pdb
+T:\better-replay\BetterReplay\obj\Debug\BetterReplay.csproj.AssemblyReference.cache
+T:\better-replay\BetterReplay\obj\Debug\BetterReplay.csproj.CoreCompileInputs.cache
+T:\better-replay\BetterReplay\obj\Debug\BetterReplay.dll
+T:\better-replay\BetterReplay\obj\Debug\BetterReplay.pdb
+T:\better-replay\BetterReplay\bin\Debug\UnityEngine.ClothModule.dll
+T:\better-replay\BetterReplay\obj\Debug\BetterReplay.csproj.CopyComplete

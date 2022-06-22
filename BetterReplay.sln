@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31702.278
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterReplay", "BetterReplay.csproj", "{020FC550-25F9-4F7F-9F62-FC3F3F7B4320}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{020FC550-25F9-4F7F-9F62-FC3F3F7B4320}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{020FC550-25F9-4F7F-9F62-FC3F3F7B4320}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{020FC550-25F9-4F7F-9F62-FC3F3F7B4320}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{020FC550-25F9-4F7F-9F62-FC3F3F7B4320}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A1E580EF-FFBA-46BA-83A0-842DA9D59EC2}
+	EndGlobalSection
+EndGlobal
