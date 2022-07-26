@@ -31,6 +31,7 @@ namespace BetterReplay
         private Vector3 lastPosition;
         private Quaternion lastRotation;
         float spf = 1f / 60f;
+        bool kinematic = false;
 
         private void Awake()
         {
@@ -42,7 +43,9 @@ namespace BetterReplay
 
         private void Start()
         {
-
+            lastPosition = transform.localPosition;
+            lastRotation = transform.localRotation;
+            kinematic = rigidBody.isKinematic;
         }
 
         private void RecordFrame()
@@ -96,7 +99,10 @@ namespace BetterReplay
                     }
                     transform.localPosition = lastPosition;
                     transform.localRotation = lastRotation;
-                    rigidBody.isKinematic = false;
+                    if(!kinematic)
+                    {
+                        rigidBody.isKinematic = false;
+                    }
                     collider.isTrigger = false;
                 }
 

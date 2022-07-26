@@ -1,0 +1,12 @@
+{
+  "Id": "better-replay",
+  "DisplayName": "Better Replay",
+  "Author": "froquede",
+  "Version": "1.1.0",
+  "ManagerVersion": "0.22.5.0",
+  "Requirements": [],
+  "LoadAfter": [ "XXLMod3" ],
+  "HomePage": "https://github.com/roquef/skaterxl-better-replay",
+  "AssemblyName": "BetterReplay.dll",
+  "EntryMethod": "BetterReplay.Main.Load"
+}

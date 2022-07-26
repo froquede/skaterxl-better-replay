@@ -30,6 +30,9 @@ namespace BetterReplay
             gameObject = new GameObject().AddComponent<BetterReplay>();
             UnityEngine.Object.DontDestroyOnLoad(gameObject);
 
+            modEntry.OnGUI = OnGUI;
+            modEntry.OnSaveGUI = new Action<UnityModManager.ModEntry>(OnSaveGUI);
+            modEntry.OnToggle = new Func<UnityModManager.ModEntry, bool, bool>(OnToggle);
             modEntry.OnUnload = Unload;
             Main.modEntry = modEntry;
 
@@ -39,7 +42,24 @@ namespace BetterReplay
 
         private static void OnGUI(UnityModManager.ModEntry modEntry)
         {
+            GUILayout.Label("");
+            GUILayout.BeginVertical(GUILayout.Width(256));
+            GUILayout.Box("<b>Replay handle color</b>", GUILayout.Height(21f));
+            settings.handle_color.r = (byte)RapidGUI.RGUI.SliderFloat(settings.handle_color.r, 0f, 255f, 0f, "Red");
+            settings.handle_color.g = (byte)RapidGUI.RGUI.SliderFloat(settings.handle_color.g, 0f, 255f, 0f, "Green");
+            settings.handle_color.b = (byte)RapidGUI.RGUI.SliderFloat(settings.handle_color.b, 0f, 255f, 0f, "Blue");
+            settings.handle_color.a = (byte)RapidGUI.RGUI.SliderFloat(settings.handle_color.a, 0f, 255f, 0f, "Opacity");
 
+            GUILayout.Box("<b>Replay handle size</b>", GUILayout.Height(21f));
+            settings.handle_size = RapidGUI.RGUI.SliderFloat(settings.handle_size, 0f, 64f, 25f, "Size");
+            GUILayout.EndVertical();
+
+            /*if(GUILayout.Button("<b>Save settings</b>", GUILayout.Width(128), GUILayout.Height(32f)))
+            {
+                settings.Save(modEntry);
+            }*/
+
+            settings.Draw(modEntry);
         }
 
         private static void OnSaveGUI(UnityModManager.ModEntry modEntry)
