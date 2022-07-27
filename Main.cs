@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using RapidGUI;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -52,6 +53,34 @@ namespace BetterReplay
 
             GUILayout.Box("<b>Replay handle size</b>", GUILayout.Height(21f));
             settings.handle_size = RapidGUI.RGUI.SliderFloat(settings.handle_size, 0f, 64f, 25f, "Size");
+
+            if (RGUI.Button(settings.disable_messages, "Disable messages"))
+            {
+                settings.disable_messages = !settings.disable_messages;
+            }
+            if (RGUI.Button(settings.disable_rb_tracker, "Disable RigidBody trackers"))
+            {
+                settings.disable_rb_tracker = !settings.disable_rb_tracker;
+            }
+            if (RGUI.Button(settings.disable_hinge_tracker, "Disable Hinge trackers"))
+            {
+                settings.disable_hinge_tracker = !settings.disable_hinge_tracker;
+            }
+            if (RGUI.Button(settings.disable_animator_tracker, "Disable Animator trackers"))
+            {
+                settings.disable_animator_tracker = !settings.disable_animator_tracker;
+            }
+
+            if (GUILayout.Button("Destroy Animator trackers", GUILayout.Height(42f), GUILayout.Width(256f)))
+            {
+                gameObject.DestroyAnimatorTracker();
+            }
+
+            if (GUILayout.Button("Destroy RigidBody and Hinge trackers", GUILayout.Height(42f), GUILayout.Width(256f)))
+            {
+                gameObject.DestroyObjectTracker();
+            }
+
             GUILayout.EndVertical();
 
             /*if(GUILayout.Button("<b>Save settings</b>", GUILayout.Width(128), GUILayout.Height(32f)))

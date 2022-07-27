@@ -11,6 +11,10 @@ namespace BetterReplay
     {
         public Color32 handle_color = new Color32(255, 0, 0, 255);
         public float handle_size = 25;
+        public bool disable_messages = false;
+        public bool disable_rb_tracker = true;
+        public bool disable_hinge_tracker = true;
+        public bool disable_animator_tracker = true;
 
         public void OnChange()
         {

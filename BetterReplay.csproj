@@ -51,6 +51,10 @@
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="modio.UnityPlugin">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\modio.UnityPlugin.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SkaterXL.Core">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Core.dll</HintPath>
       <Private>False</Private>
@@ -125,6 +129,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnimationTracker.cs" />
     <Compile Include="BetterReplay.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="ObjectTracker.cs" />
