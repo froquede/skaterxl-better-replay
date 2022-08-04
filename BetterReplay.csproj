@@ -83,6 +83,10 @@
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Unity.TextMeshPro">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="UnityEngine">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>

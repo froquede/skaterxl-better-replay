@@ -9,6 +9,7 @@ using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.UI;
 using ModIO.UI;
 using System.Collections.Generic;
+using TMPro;
 
 namespace BetterReplay
 {
@@ -17,45 +18,33 @@ namespace BetterReplay
         public string scene = "";
         public Type state;
         int count = 0;
-        GameObject XLGraphics;
-        Light XLGLight;
+        GameObject XLGLight;
+        Light XLGLightComp;
+        HDAdditionalLightData XLGLightAdditionalData;
+        Transform mainCamera, replayCamera;
+        public bool light_enabled = false;
 
         public void Start()
         {
             PlayerController.Instance.pinMover.maxHeight = float.PositiveInfinity;
             getReplayEditor();
-            //CheckXLGraphicsLight();
-            //CreateFixLight();
-        }
-
-        void CheckXLGraphicsLight()
-        {
-            HDAdditionalLightData[] list = FindObjectsOfType(typeof(HDAdditionalLightData)) as HDAdditionalLightData[];
-            foreach (HDAdditionalLightData obj in list)
-            {
-                Component[] components = obj.gameObject.GetComponents<MonoBehaviour>();
-                foreach (Component component in components)
-                {
-                    if (component.GetType().ToString().Contains("XLGraphics"))
-                    {
-                        XLGraphics = obj.gameObject;
-                        if (XLGraphics.GetComponent<ObjectTracker>() == null)
-                        {
-                            XLGraphics.AddComponent<BoxCollider>().enabled = false;
-                            XLGraphics.AddComponent<Rigidbody>();
-                            XLGraphics.AddComponent<ObjectTracker>();
-                        }
-
-                        XLGLight = XLGraphics.GetComponent<Light>();
-                        return;
-                    }
-                }
-            }
+            CreateFixLight();
         }
 
         void CreateFixLight()
         {
+            XLGLight = new GameObject("FixLight");
+            XLGLightComp = XLGLight.AddComponent<Light>();
+            XLGLightAdditionalData = XLGLight.AddComponent<HDAdditionalLightData>();
+            XLGLightAdditionalData.lightUnit = LightUnit.Ev100;
+            XLGLightComp.type = LightType.Spot;
+            XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
+            XLGLightComp.intensity = Main.settings.light_intensity * 1000;
+            XLGLightComp.spotAngle = Main.settings.light_spotangle;
+            XLGLightComp.range = Main.settings.light_range;
 
+            mainCamera = PlayerController.Instance.cameraController.gameObject.transform.FindChildRecursively("Gameplay Camera");
+            XLGLight.transform.rotation = mainCamera.rotation;
         }
 
         Transform replay;
@@ -65,6 +54,7 @@ namespace BetterReplay
             Transform main = PlayerController.Instance.skaterController.transform.parent.transform.parent;
             replay = main.Find("ReplayEditor");
             keyframes = replay.GetComponent<ReplayEditor.ReplayEditorController>().cameraController.keyframeUI;
+            replayCamera = replay.FindChildRecursively("VirtualCamera1");
         }
 
         void UpdateSliderHandles()
@@ -75,6 +65,35 @@ namespace BetterReplay
                 s.handleRect.SetHeight(Main.settings.handle_size);
                 Image img = s.handleRect.GetComponent<Image>();
                 img.color = Main.settings.handle_color;
+            }
+        }
+
+        public void Update()
+        {
+            if (light_enabled)
+            {
+                XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
+                XLGLightComp.intensity = Main.settings.light_intensity * 1000;
+                XLGLightComp.spotAngle = Main.settings.light_spotangle;
+                XLGLightComp.range = Main.settings.light_range;
+
+                if (GameStateMachine.Instance.CurrentState.GetType() == typeof(PlayState))
+                {
+                    XLGLight.transform.position = mainCamera.TransformPoint(Vector3.zero);
+                    XLGLight.transform.rotation = mainCamera.rotation;
+                }
+
+                if (GameStateMachine.Instance.CurrentState.GetType() == typeof(ReplayState))
+                {
+                    XLGLight.transform.position = replayCamera.TransformPoint(Vector3.zero);
+                    XLGLight.transform.rotation = replayCamera.rotation;
+                    UnityModManager.Logger.Log(XLGLight.transform.position.ToString());
+                }
+            }
+            else
+            {
+                XLGLightAdditionalData.intensity = 0;
+                XLGLightComp.intensity = 0;
             }
         }
 
@@ -102,7 +121,7 @@ namespace BetterReplay
             if (GameStateMachine.Instance.CurrentState.GetType() == typeof(ReplayState))
             {
                 UpdateSliderHandles();
-            }
+            }            
         }
 
         public void LateUpdate()
@@ -113,6 +132,7 @@ namespace BetterReplay
                 if (last_state == typeof(ReplayState) && !GameStateMachine.Instance.loadingScreenController.IsLoading)
                 {
                     ReplayEditorController.Instance.playbackController.CurrentTime = ReplayEditorController.Instance.playbackController.ClipEndTime;
+                    ReplayEditorController.Instance.cameraController.OnReplayEditorStart();
                     state = last_state;
                 }
             }
@@ -120,6 +140,15 @@ namespace BetterReplay
             {
                 state = last_state;
             }
+
+            if (Input.GetKeyDown(KeyCode.L))
+            {
+                light_enabled = !light_enabled;
+                NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
+            }
+
+            PlayerController.Instance.pinMover.MoveSpeed = Main.settings.pin_movespeed;
+            PlayerController.Instance.pinMover.RotateSpeed = Main.settings.pin_rotationspeed;
         }
 
         string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)" };

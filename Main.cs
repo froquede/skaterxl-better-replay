@@ -43,7 +43,9 @@ namespace BetterReplay
 
         private static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            GUILayout.Label("");
+            GUILayout.Label("   ");
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
             GUILayout.BeginVertical(GUILayout.Width(256));
             GUILayout.Box("<b>Replay handle color</b>", GUILayout.Height(21f));
             settings.handle_color.r = (byte)RapidGUI.RGUI.SliderFloat(settings.handle_color.r, 0f, 255f, 0f, "Red");
@@ -54,6 +56,7 @@ namespace BetterReplay
             GUILayout.Box("<b>Replay handle size</b>", GUILayout.Height(21f));
             settings.handle_size = RapidGUI.RGUI.SliderFloat(settings.handle_size, 0f, 64f, 25f, "Size");
 
+            GUILayout.Box("<b>Trackers options</b>", GUILayout.Height(21f));
             if (RGUI.Button(settings.disable_messages, "Disable messages"))
             {
                 settings.disable_messages = !settings.disable_messages;
@@ -71,22 +74,41 @@ namespace BetterReplay
                 settings.disable_animator_tracker = !settings.disable_animator_tracker;
             }
 
-            if (GUILayout.Button("Destroy Animator trackers", GUILayout.Height(42f), GUILayout.Width(256f)))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Destroy Animator trackers", GUILayout.Height(42f), GUILayout.Width(212f)))
             {
                 gameObject.DestroyAnimatorTracker();
             }
 
-            if (GUILayout.Button("Destroy RigidBody and Hinge trackers", GUILayout.Height(42f), GUILayout.Width(256f)))
+            if (GUILayout.Button("Destroy RigidBody/Hinge trackers", GUILayout.Height(42f), GUILayout.Width(212f)))
             {
                 gameObject.DestroyObjectTracker();
+            }
+            GUILayout.EndHorizontal();
+
+            if (GUILayout.Button("Rescan objects", GUILayout.Height(42f), GUILayout.Width(212f)))
+            {
+                gameObject.AddObjectTrackers();
             }
 
             GUILayout.EndVertical();
 
-            /*if(GUILayout.Button("<b>Save settings</b>", GUILayout.Width(128), GUILayout.Height(32f)))
-            {
-                settings.Save(modEntry);
-            }*/
+            GUILayout.BeginVertical(GUILayout.Width(256));
+            GUILayout.Box("<b>Pin options</b>", GUILayout.Height(21f));
+            settings.pin_movespeed = RGUI.SliderFloat(settings.pin_movespeed, 0f, 60f, 10f, "Move speed");
+            settings.pin_rotationspeed = RGUI.SliderFloat(settings.pin_rotationspeed, 0f, 360f, 180f, "Rotation speed");
+
+            GUILayout.Box("<b>Light options (toggled with \"L\")</b>", GUILayout.Height(21f));
+            settings.light_intensity = RGUI.SliderFloat(settings.light_intensity, 0f, 50f, 6f, "Intensity");
+            settings.light_range = RGUI.SliderFloat(settings.light_range, 0f, 200f, 5f, "Range");
+            settings.light_spotangle = RGUI.SliderFloat(settings.light_spotangle, 1f, 360f, 120f, "Angle");
+            GUILayout.EndVertical();
+
+            GUILayout.BeginVertical(GUILayout.Width(44));
+            GUILayout.Label("   ");
+            GUILayout.EndVertical();
+
+            GUILayout.EndHorizontal();
 
             settings.Draw(modEntry);
         }

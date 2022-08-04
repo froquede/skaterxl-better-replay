@@ -16,6 +16,13 @@ namespace BetterReplay
         public bool disable_hinge_tracker = true;
         public bool disable_animator_tracker = true;
 
+        public float light_intensity = 6.00f;
+        public float light_spotangle = 120f;
+        public float light_range = 5f;
+
+        public float pin_movespeed = 10f;
+        public float pin_rotationspeed = 180f;
+
         public void OnChange()
         {
             throw new NotImplementedException();
