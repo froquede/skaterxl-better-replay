@@ -98,10 +98,16 @@ namespace BetterReplay
             settings.pin_movespeed = RGUI.SliderFloat(settings.pin_movespeed, 0f, 60f, 10f, "Move speed");
             settings.pin_rotationspeed = RGUI.SliderFloat(settings.pin_rotationspeed, 0f, 360f, 180f, "Rotation speed");
 
-            GUILayout.Box("<b>Light options (toggled with \"L\")</b>", GUILayout.Height(21f));
-            settings.light_intensity = RGUI.SliderFloat(settings.light_intensity, 0f, 50f, 6f, "Intensity");
+            GUILayout.Box("<b>Light options (toggled with ctrl + \"L\")</b>", GUILayout.Height(21f));
+            settings.light_intensity = RGUI.SliderFloat(settings.light_intensity, 0f, 1000f, 6f, "Intensity");
             settings.light_range = RGUI.SliderFloat(settings.light_range, 0f, 200f, 5f, "Range");
             settings.light_spotangle = RGUI.SliderFloat(settings.light_spotangle, 1f, 360f, 120f, "Angle");
+            settings.light_temperature = RGUI.SliderFloat(settings.light_temperature, 0f, 10000f, 6500f, "Color temperature (kelvin)");
+            settings.light_dimmer = RGUI.SliderFloat(settings.light_dimmer, 0f, 16f, 0f, "Volumetric dimmer");
+            /*GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Light cookie texture:</b>");
+            settings.cookie_texture = RGUI.SelectionPopup(settings.cookie_texture, gameObject.CookieNames);
+            GUILayout.EndHorizontal();*/
             GUILayout.EndVertical();
 
             GUILayout.BeginVertical(GUILayout.Width(44));

@@ -10,6 +10,8 @@ using UnityEngine.UI;
 using ModIO.UI;
 using System.Collections.Generic;
 using TMPro;
+using System.IO;
+using System.Linq;
 
 namespace BetterReplay
 {
@@ -23,10 +25,13 @@ namespace BetterReplay
         HDAdditionalLightData XLGLightAdditionalData;
         Transform mainCamera, replayCamera;
         public bool light_enabled = false;
+        public string EmptyCookieName = "None";
+        Dictionary<string, Texture2D> Cookies = new Dictionary<string, Texture2D>();
 
         public void Start()
         {
             PlayerController.Instance.pinMover.maxHeight = float.PositiveInfinity;
+            // GetCookies();
             getReplayEditor();
             CreateFixLight();
         }
@@ -37,11 +42,16 @@ namespace BetterReplay
             XLGLightComp = XLGLight.AddComponent<Light>();
             XLGLightAdditionalData = XLGLight.AddComponent<HDAdditionalLightData>();
             XLGLightAdditionalData.lightUnit = LightUnit.Ev100;
-            XLGLightComp.type = LightType.Spot;
+            XLGLightAdditionalData.volumetricDimmer = Main.settings.light_dimmer;
             XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
             XLGLightComp.intensity = Main.settings.light_intensity * 1000;
+            XLGLightComp.type = LightType.Spot;
             XLGLightComp.spotAngle = Main.settings.light_spotangle;
             XLGLightComp.range = Main.settings.light_range;
+            XLGLightComp.colorTemperature = Main.settings.light_temperature;
+            XLGLightComp.useColorTemperature = true;
+            /*XLGLightComp.cookie = (Main.settings.cookie_texture == "None") ? null : Cookies[Main.settings.cookie_texture];
+            if (Main.settings.cookie_texture != EmptyCookieName) XLGLightAdditionalData.SetCookie(Cookies[Main.settings.cookie_texture], new Vector2(1.0f, 1.0f));*/
 
             mainCamera = PlayerController.Instance.cameraController.gameObject.transform.FindChildRecursively("Gameplay Camera");
             XLGLight.transform.rotation = mainCamera.rotation;
@@ -68,15 +78,11 @@ namespace BetterReplay
             }
         }
 
+        int frame = 0;
         public void Update()
         {
             if (light_enabled)
             {
-                XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
-                XLGLightComp.intensity = Main.settings.light_intensity * 1000;
-                XLGLightComp.spotAngle = Main.settings.light_spotangle;
-                XLGLightComp.range = Main.settings.light_range;
-
                 if (GameStateMachine.Instance.CurrentState.GetType() == typeof(PlayState))
                 {
                     XLGLight.transform.position = mainCamera.TransformPoint(Vector3.zero);
@@ -87,16 +93,19 @@ namespace BetterReplay
                 {
                     XLGLight.transform.position = replayCamera.TransformPoint(Vector3.zero);
                     XLGLight.transform.rotation = replayCamera.rotation;
-                    UnityModManager.Logger.Log(XLGLight.transform.position.ToString());
                 }
-            }
-            else
-            {
-                XLGLightAdditionalData.intensity = 0;
-                XLGLightComp.intensity = 0;
             }
         }
 
+        public static float map01(float value, float min, float max)
+        {
+            float result = (value - min) * 1f / (max - min);
+            if (result > 1) return 1;
+            else return result;
+        }
+
+        System.Random rand = new System.Random();
+        char[] pattern = "mmamammmmammamamaaamammma".ToCharArray();
         public void FixedUpdate()
         {
             string actual_scene = SceneManager.GetActiveScene().name;
@@ -108,7 +117,9 @@ namespace BetterReplay
                     if (SceneManager.GetActiveScene().isLoaded)
                     {
                         scene = actual_scene;
+                        CreateFixLight();
                         AddObjectTrackers();
+                        // ConsolePlayerPrefs.SetString("LastLevelPath", scene);
                         count = 0;
                     }
                 }
@@ -121,7 +132,36 @@ namespace BetterReplay
             if (GameStateMachine.Instance.CurrentState.GetType() == typeof(ReplayState))
             {
                 UpdateSliderHandles();
-            }            
+            }
+
+            if (light_enabled)
+            {
+                XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
+                XLGLightAdditionalData.volumetricDimmer = Main.settings.light_dimmer;
+                XLGLightComp.intensity = Mathf.Lerp(0, Main.settings.light_intensity * 1000, map01(frame, 0, 25));
+                if (pattern.Length > frame)
+                {
+                    XLGLightComp.intensity = pattern[frame] == 'm' ? XLGLightComp.intensity : 100 * (float)rand.NextDouble();
+                }
+                else
+                {
+                    XLGLightComp.intensity = Main.settings.light_intensity * 1000;
+                }
+
+                XLGLightComp.spotAngle = Main.settings.light_spotangle;
+                XLGLightComp.range = Main.settings.light_range;
+                XLGLightComp.colorTemperature = Main.settings.light_temperature;
+                /*XLGLightComp.cookie = (Main.settings.cookie_texture == EmptyCookieName) ? null : Cookies[Main.settings.cookie_texture];
+                if (Main.settings.cookie_texture != EmptyCookieName) XLGLightAdditionalData.SetCookie(Cookies[Main.settings.cookie_texture], new Vector2(1.0f, 1.0f));*/
+                frame++;
+            }
+            else
+            {
+                frame = frame > 18 ? 18 : frame;
+                if(frame > 0) frame--;
+                XLGLightAdditionalData.intensity = 0;
+                XLGLightComp.intensity = Mathf.Lerp(0, Main.settings.light_intensity * 1000, map01(frame, 0, 18)); ;
+            }
         }
 
         public void LateUpdate()
@@ -133,6 +173,7 @@ namespace BetterReplay
                 {
                     ReplayEditorController.Instance.playbackController.CurrentTime = ReplayEditorController.Instance.playbackController.ClipEndTime;
                     ReplayEditorController.Instance.cameraController.OnReplayEditorStart();
+                    SoundManager.Instance.StopPowerslideSound(0, 0);
                     state = last_state;
                 }
             }
@@ -141,7 +182,7 @@ namespace BetterReplay
                 state = last_state;
             }
 
-            if (Input.GetKeyDown(KeyCode.L))
+            if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.L))
             {
                 light_enabled = !light_enabled;
                 NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
@@ -291,6 +332,35 @@ namespace BetterReplay
         {
             ReplayEditorController.Instance.cameraController.SetCameraMode(ReplayEditor.CameraMode.Orbit, true);
             ReplayEditorController.Instance.cameraController.OrbitCamera.gameObject.SetActive(true);
+        }
+
+        void GetCookies()
+        {
+            Cookies[EmptyCookieName] = null;
+            var gparent = Directory.GetParent(Directory.GetParent(Main.modEntry.Path).ToString());
+            var main_path = gparent.ToString() + "\\XLGraphics\\Cookies";
+            if (Directory.Exists(main_path))
+            {
+                string[] files = Directory.GetFiles(main_path, "*.png");
+                foreach (string path in files)
+                {
+                    Texture2D texture2D = new Texture2D(256, 256, TextureFormat.RGBA32, false);
+                    texture2D.LoadImage(File.ReadAllBytes(path));
+                    texture2D.filterMode = FilterMode.Point;
+                    Cookies[Path.GetFileNameWithoutExtension(path)] = texture2D;
+                }
+            }
+            else
+            {
+                UnityModManager.Logger.Log("No XLG or Cookies folder");
+            }
+        }
+        public string[] CookieNames
+        {
+            get
+            {
+                return Cookies.Keys.ToArray();
+            }
         }
     }
 }
