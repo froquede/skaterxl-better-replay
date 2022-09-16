@@ -55,6 +55,10 @@
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\modio.UnityPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Rewired_Core.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
     <Reference Include="SkaterXL.Core">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Core.dll</HintPath>
       <Private>False</Private>
@@ -93,6 +97,10 @@
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
@@ -138,6 +146,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnimationTracker.cs" />
+    <Compile Include="AudioSourceTracker.cs" />
     <Compile Include="BetterReplay.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="ObjectTracker.cs" />

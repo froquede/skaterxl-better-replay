@@ -94,6 +94,8 @@ namespace BetterReplay
                     XLGLight.transform.position = replayCamera.TransformPoint(Vector3.zero);
                     XLGLight.transform.rotation = replayCamera.rotation;
                 }
+
+                XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);
             }
         }
 
@@ -158,7 +160,7 @@ namespace BetterReplay
             else
             {
                 frame = frame > 18 ? 18 : frame;
-                if(frame > 0) frame--;
+                if (frame > 0) frame--;
                 XLGLightAdditionalData.intensity = 0;
                 XLGLightComp.intensity = Mathf.Lerp(0, Main.settings.light_intensity * 1000, map01(frame, 0, 18)); ;
             }
@@ -182,24 +184,43 @@ namespace BetterReplay
                 state = last_state;
             }
 
+            if (Main.settings.double_tap)
+            {
+                if(PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Pushing || PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Riding || PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Impact)
+                {
+                    if(PlayerController.Instance.inputController.player.GetButtonDoublePressDown("Left Stick Button")) ToggleLight();
+                    if (PlayerController.Instance.inputController.player.GetButtonDoublePressHold("Left Stick Button"))
+                    {
+                        if (PlayerController.Instance.inputController.player.GetButton("RB")) Main.settings.light_intensity += .5f;
+                        if (PlayerController.Instance.inputController.player.GetButton("LB")) Main.settings.light_intensity -= .5f;
+                    }
+                }
+            }
+
             if ((Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl)) && Input.GetKeyDown(KeyCode.L))
             {
-                light_enabled = !light_enabled;
-                NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
+                ToggleLight();
             }
 
             PlayerController.Instance.pinMover.MoveSpeed = Main.settings.pin_movespeed;
             PlayerController.Instance.pinMover.RotateSpeed = Main.settings.pin_rotationspeed;
         }
 
-        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)" };
+        public void ToggleLight()
+        {
+            light_enabled = !light_enabled;
+            NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
+        }
+
+        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)", "UI_Source", "Movement_Foley_Source", "Powerslide_Hits_Source 2", "Powerslide_Loop_Source 2", "Powerslide_Hits_Source", "Powerslide_Loop_Source", "Wheel_Rolling_Loops_High_Source", "Wheel_Rolling_Loop_Low_Source", "Music_Source", "Wheel_Hits_Source", "Grind_Loop_Source", "Deck_Source", "Grind_Hits_Source", "Shoes_Hit_Source", "Shoes_Scrape_Source", "Bearing_Source", "GamePlay", "UI_Audio_Source", "Music(Clone)", "AmbientSounds" };
         public void AddObjectTrackers()
         {
-            UnityModManager.Logger.Log("Checking Hinges, RigidBodies and Animators for replay tracking...");
+            UnityModManager.Logger.Log("Checking Hinges, RigidBodies, Animators, and AudioSources for replay tracking...");
 
             HingeTracker();
             RBTracker();
             AnimatorTracker();
+            AudioSourceTracker();
         }
 
         public void HingeTracker()
@@ -304,12 +325,51 @@ namespace BetterReplay
             if (anim_count > 0 && !Main.settings.disable_messages) MessageSystem.QueueMessage(MessageDisplayData.Type.Success, $"Tracker added - {anim_count} animators", 1.5f);
         }
 
+        public void AudioSourceTracker()
+        {
+            if (Main.settings.disable_audiosource_tracker) return;
+
+            var audiosources = FindObjectsOfType<AudioSource>();
+            int anim_count = 0;
+
+            for (int i = 0; i < audiosources.Length; i++)
+            {
+                AudioSource go = audiosources[i];
+                bool add = true;
+
+                if (!go.gameObject.activeSelf) add = false;
+                for (int n = 0; n < internals.Length; n++)
+                {
+                    if (go.name == internals[n]) add = false;
+                }
+
+                AudioSourceTracker ot = go.GetComponent<AudioSourceTracker>();
+                if (add && ot == null)
+                {
+                    go.gameObject.AddComponent<AudioSourceTracker>();
+                    UnityModManager.Logger.Log("AudioSource tracker - " + go.gameObject.name);
+                    anim_count++;
+                }
+            }
+
+            if (anim_count > 0 && !Main.settings.disable_messages) MessageSystem.QueueMessage(MessageDisplayData.Type.Success, $"Tracker added - {anim_count} audio sources", 1.5f);
+        }
+
         public void DestroyObjectTracker()
         {
             var objects = FindObjectsOfType<ObjectTracker>();
             for (int i = 0; i < objects.Length; i++)
             {
                 Destroy(objects[i].gameObject.GetComponent<ObjectTracker>());
+            }
+        }
+
+        public void DestroyAudioSourceTracker()
+        {
+            var objects = FindObjectsOfType<AudioSourceTracker>();
+            for (int i = 0; i < objects.Length; i++)
+            {
+                Destroy(objects[i].gameObject.GetComponent<AudioSourceTracker>());
             }
         }
 

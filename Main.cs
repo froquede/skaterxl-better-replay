@@ -73,6 +73,10 @@ namespace BetterReplay
             {
                 settings.disable_animator_tracker = !settings.disable_animator_tracker;
             }
+            if (RGUI.Button(settings.disable_audiosource_tracker, "Disable AudioSource trackers"))
+            {
+                settings.disable_audiosource_tracker = !settings.disable_audiosource_tracker;
+            }            
 
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("Destroy Animator trackers", GUILayout.Height(42f), GUILayout.Width(212f)))
@@ -86,10 +90,16 @@ namespace BetterReplay
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Destroy AudioSource trackers", GUILayout.Height(42f), GUILayout.Width(212f)))
+            {
+                gameObject.DestroyAudioSourceTracker();
+            }
             if (GUILayout.Button("Rescan objects", GUILayout.Height(42f), GUILayout.Width(212f)))
             {
                 gameObject.AddObjectTrackers();
             }
+            GUILayout.EndHorizontal();
 
             GUILayout.EndVertical();
 
@@ -99,11 +109,21 @@ namespace BetterReplay
             settings.pin_rotationspeed = RGUI.SliderFloat(settings.pin_rotationspeed, 0f, 360f, 180f, "Rotation speed");
 
             GUILayout.Box("<b>Light options (toggled with ctrl + \"L\")</b>", GUILayout.Height(21f));
+            if (RGUI.Button(settings.double_tap, "Toggle light with double tap on left stick"))
+            {
+                settings.double_tap = !settings.double_tap;
+            }
             settings.light_intensity = RGUI.SliderFloat(settings.light_intensity, 0f, 1000f, 6f, "Intensity");
             settings.light_range = RGUI.SliderFloat(settings.light_range, 0f, 200f, 5f, "Range");
             settings.light_spotangle = RGUI.SliderFloat(settings.light_spotangle, 1f, 360f, 120f, "Angle");
             settings.light_temperature = RGUI.SliderFloat(settings.light_temperature, 0f, 10000f, 6500f, "Color temperature (kelvin)");
             settings.light_dimmer = RGUI.SliderFloat(settings.light_dimmer, 0f, 16f, 0f, "Volumetric dimmer");
+
+            GUILayout.Space(8);
+            settings.light_offset.x = RGUI.SliderFloat(settings.light_offset.x, -2f, 2f, 0f, "Light position X");
+            settings.light_offset.y = RGUI.SliderFloat(settings.light_offset.y, -2f, 2f, 0f, "Light position Y");
+            settings.light_offset.z = RGUI.SliderFloat(settings.light_offset.z, -2f, 2f, 0f, "Light position Z");
+
             /*GUILayout.BeginHorizontal();
             GUILayout.Label("<b>Light cookie texture:</b>");
             settings.cookie_texture = RGUI.SelectionPopup(settings.cookie_texture, gameObject.CookieNames);

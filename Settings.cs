@@ -15,6 +15,7 @@ namespace BetterReplay
         public bool disable_rb_tracker = true;
         public bool disable_hinge_tracker = true;
         public bool disable_animator_tracker = true;
+        public bool disable_audiosource_tracker = true;
 
         public float light_intensity = 6.00f;
         public float light_spotangle = 120f;
@@ -22,6 +23,8 @@ namespace BetterReplay
         public float light_temperature = 6500f;
         public float light_dimmer = 0f;
         public string cookie_texture = "None";
+        public Vector3 light_offset = new Vector3();
+        public bool double_tap = true;
 
         public float pin_movespeed = 10f;
         public float pin_rotationspeed = 180f;
