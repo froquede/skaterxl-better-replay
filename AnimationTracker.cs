@@ -67,12 +67,12 @@ namespace BetterReplay
             {
                 if (animatorClip.Length > 0)
                 {
-                    if (animator.speed != 1) animator.speed = 1; animator.Play(animatorClip[0].clip.name);
-                    // float derived_normalized = last_anim_time + (Time.unscaledTime - last_time) % animatorClip[0].clip.length;
+                    if (animator.speed != 1) {
+                        animator.speed = 1;
+                        animator.Play(animatorClip[0].clip.name);
+                    }
                     animationState = animator.GetCurrentAnimatorStateInfo(0);
                     tracker.pushState(PlayTime.time, animationState.normalizedTime, animatorClip[0].clip.name);
-                    /*last_time = Time.unscaledTime;
-                    last_anim_time = derived_normalized;*/
 
                     if (tracker.time.Count >= BufferFrameCount)
                     {
@@ -81,7 +81,7 @@ namespace BetterReplay
                 }
                 else
                 {
-                    // if (!Main.settings.disable_messages) MessageSystem.QueueMessage(MessageDisplayData.Type.Error, $"Incompatible animator for now, removing tracker @ {gameObject.name}", 1.5f);
+                    UnityModManager.Logger.Log($"Incompatible animator for now, removing tracker @ {gameObject.name}");
                     Destroy(gameObject.GetComponent<AnimationTracker>());
                 }
             }

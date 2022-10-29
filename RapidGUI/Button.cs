@@ -12,25 +12,26 @@ namespace RapidGUI
 
         public static bool Button(bool v, string label, params GUILayoutOption[] options)
         {
-            GUI.backgroundColor = Color.black;
-
             using (new GUILayout.VerticalScope(options))
             using (new GUILayout.HorizontalScope())
             {
                 string text;
-                GUILayout.Label("<b>" + label + "</b>");
+                GUILayout.Label("<b>" + label + "</b>", GUILayout.Height(24f));
 
                 if (v)
                 {
-                    text = "On";
+                    GUI.backgroundColor = Color.green;
+                    text = "Enabled";
                 }
                 else
                 {
-                    text = "Off";
+                    text = "Disabled";
                 }
 
-                v = GUILayout.Button("<b>" + text + "</b>", RGUIStyle.button, GUILayout.Width(52f));
+                v = GUILayout.Button("<b>" + text + "</b>", RGUIStyle.button, GUILayout.Width(72f), GUILayout.Height(24f));
             }
+
+            GUI.backgroundColor = Color.black;
 
             return v;
         }

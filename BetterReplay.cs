@@ -23,7 +23,8 @@ namespace BetterReplay
         GameObject XLGLight;
         Light XLGLightComp;
         HDAdditionalLightData XLGLightAdditionalData;
-        Transform mainCamera, replayCamera;
+        Transform mainCamera, replayCamera, pinCamera, pinMover;
+        float distance_multiplier = 1;
         public bool light_enabled = false;
         public string EmptyCookieName = "None";
         Dictionary<string, Texture2D> Cookies = new Dictionary<string, Texture2D>();
@@ -33,6 +34,7 @@ namespace BetterReplay
             PlayerController.Instance.pinMover.maxHeight = float.PositiveInfinity;
             // GetCookies();
             getReplayEditor();
+            getPinCamera();
             CreateFixLight();
         }
 
@@ -67,6 +69,12 @@ namespace BetterReplay
             replayCamera = replay.FindChildRecursively("VirtualCamera1");
         }
 
+        void getPinCamera()
+        {
+            pinMover = PlayerController.Instance.transform.parent.FindChildRecursively("Pin Mover");
+            pinCamera = PlayerController.Instance.transform.parent.FindChildRecursively("GroundLocationIndicator");
+        }
+
         void UpdateSliderHandles()
         {
             foreach (Slider s in keyframes.keyframeSliders)
@@ -95,7 +103,14 @@ namespace BetterReplay
                     XLGLight.transform.rotation = replayCamera.rotation;
                 }
 
-                XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);
+                if (GameStateMachine.Instance.CurrentState.GetType() == typeof(PinMovementState))
+                {
+                    XLGLight.transform.position = pinMover.transform.position + new Vector3(0, 2, 0);
+                    XLGLight.transform.LookAt(pinCamera);
+                    distance_multiplier = Mathf.Lerp(distance_multiplier, pinMover.transform.position.y - pinCamera.transform.position.y, Time.deltaTime * 4);
+                }
+
+                XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);                
             }
         }
 
@@ -138,7 +153,7 @@ namespace BetterReplay
 
             if (light_enabled)
             {
-                XLGLightAdditionalData.intensity = Main.settings.light_intensity * 1000;
+                XLGLightAdditionalData.intensity = (Main.settings.light_intensity * 1000) * (GameStateMachine.Instance.CurrentState.GetType() == typeof(PinMovementState) ? distance_multiplier : 1);
                 XLGLightAdditionalData.volumetricDimmer = Main.settings.light_dimmer;
                 XLGLightComp.intensity = Mathf.Lerp(0, Main.settings.light_intensity * 1000, map01(frame, 0, 25));
                 if (pattern.Length > frame)
@@ -147,7 +162,7 @@ namespace BetterReplay
                 }
                 else
                 {
-                    XLGLightComp.intensity = Main.settings.light_intensity * 1000;
+                    XLGLightComp.intensity = (Main.settings.light_intensity * 1000) * (GameStateMachine.Instance.CurrentState.GetType() == typeof(PinMovementState) ? distance_multiplier : 1); ;
                 }
 
                 XLGLightComp.spotAngle = Main.settings.light_spotangle;
@@ -191,8 +206,8 @@ namespace BetterReplay
                     if(PlayerController.Instance.inputController.player.GetButtonDoublePressDown("Left Stick Button")) ToggleLight();
                     if (PlayerController.Instance.inputController.player.GetButtonDoublePressHold("Left Stick Button"))
                     {
-                        if (PlayerController.Instance.inputController.player.GetButton("RB")) Main.settings.light_intensity += .5f;
-                        if (PlayerController.Instance.inputController.player.GetButton("LB")) Main.settings.light_intensity -= .5f;
+                        if (PlayerController.Instance.inputController.player.GetButton("RB")) Main.settings.light_intensity += .05f;
+                        if (PlayerController.Instance.inputController.player.GetButton("LB")) Main.settings.light_intensity -= .05f;
                     }
                 }
             }
@@ -212,7 +227,7 @@ namespace BetterReplay
             NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
         }
 
-        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)", "UI_Source", "Movement_Foley_Source", "Powerslide_Hits_Source 2", "Powerslide_Loop_Source 2", "Powerslide_Hits_Source", "Powerslide_Loop_Source", "Wheel_Rolling_Loops_High_Source", "Wheel_Rolling_Loop_Low_Source", "Music_Source", "Wheel_Hits_Source", "Grind_Loop_Source", "Deck_Source", "Grind_Hits_Source", "Shoes_Hit_Source", "Shoes_Scrape_Source", "Bearing_Source", "GamePlay", "UI_Audio_Source", "Music(Clone)", "AmbientSounds" };
+        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)", "UI_Source", "Movement_Foley_Source", "Powerslide_Hits_Source 2", "Powerslide_Loop_Source 2", "Powerslide_Hits_Source", "Powerslide_Loop_Source", "Wheel_Rolling_Loops_High_Source", "Wheel_Rolling_Loop_Low_Source", "Music_Source", "Wheel_Hits_Source", "Grind_Loop_Source", "Deck_Source", "Grind_Hits_Source", "Shoes_Hit_Source", "Shoes_Scrape_Source", "Bearing_Source", "GamePlay", "UI_Audio_Source", "Music(Clone)", "AmbientSounds", "dots", "WithoutProgressVariant" };
         public void AddObjectTrackers()
         {
             UnityModManager.Logger.Log("Checking Hinges, RigidBodies, Animators, and AudioSources for replay tracking...");
@@ -313,7 +328,7 @@ namespace BetterReplay
                     if (go.name == internals[n]) add = false;
                 }
 
-                AnimationTracker ot = go.GetComponent<AnimationTracker>();
+                AnimationTracker ot = go.gameObject.GetComponent<AnimationTracker>();
                 if (add && ot == null)
                 {
                     go.gameObject.AddComponent<AnimationTracker>();
@@ -343,11 +358,11 @@ namespace BetterReplay
                     if (go.name == internals[n]) add = false;
                 }
 
-                AudioSourceTracker ot = go.GetComponent<AudioSourceTracker>();
+                AudioSourceTracker ot = go.gameObject.GetComponent<AudioSourceTracker>();
                 if (add && ot == null)
                 {
                     go.gameObject.AddComponent<AudioSourceTracker>();
-                    UnityModManager.Logger.Log("AudioSource tracker - " + go.gameObject.name);
+                    UnityModManager.Logger.Log("AudioSource tracker - " + go.gameObject.name + " " + go.transform.parent.gameObject.name);
                     anim_count++;
                 }
             }

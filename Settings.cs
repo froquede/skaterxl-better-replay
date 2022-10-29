@@ -24,6 +24,7 @@ namespace BetterReplay
         public float light_dimmer = 0f;
         public string cookie_texture = "None";
         public Vector3 light_offset = new Vector3();
+        public Vector3 light_rotation_offset = new Vector3();
         public bool double_tap = true;
 
         public float pin_movespeed = 10f;

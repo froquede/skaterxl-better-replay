@@ -46,7 +46,6 @@ namespace RapidGUI
                 alignment = TextAnchor.MiddleCenter
             };
 
-            style.fixedHeight = 21f;
             button = style;
         }
 
