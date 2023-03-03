@@ -66,7 +66,8 @@ namespace BetterReplay
         ReplayEditor.KeyframeUIController keyframes;
         void getReplayEditor()
         {
-            Transform main = PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.skaterController.transform.parent.transform.parent;
+            Transform main = PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.transformReference.skaterRoot.transform.parent.transform.parent.transform.parent;
+            UnityModManager.Logger.Log(main.name);
             replay = main.Find("ReplayEditor");
             keyframes = replay.GetComponent<ReplayEditor.ReplayEditorController>().cameraController.keyframeUI;
             replayCamera = replay.FindChildRecursively("VirtualCamera1");
@@ -74,8 +75,9 @@ namespace BetterReplay
 
         void getPinCamera()
         {
-            pinMover = PlayerController.Instances[PlayerController.Instances.Count - 1].transform.parent.FindChildRecursively("Pin Mover");
-            pinCamera = PlayerController.Instances[PlayerController.Instances.Count - 1].transform.parent.FindChildRecursively("GroundLocationIndicator");
+            Transform main = PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.transformReference.skaterRoot.transform.parent.transform.parent.transform.parent;
+            pinMover = main.FindChildRecursively("Pin Mover");
+            pinCamera = main.FindChildRecursively("GroundLocationIndicator");
         }
 
         void UpdateSliderHandles()
@@ -103,6 +105,8 @@ namespace BetterReplay
                 catch { }
             }*/
 
+            //UnityModManager.Logger.Log(light_enabled + " " + GameStateMachine.Instance.CurrentState.GetType() + " " + (replayCamera == null));
+
             if (light_enabled)
             {
                 if (GameStateMachine.Instance.CurrentState.GetType() == typeof(PlayState))
@@ -121,7 +125,7 @@ namespace BetterReplay
                 {
                     XLGLight.transform.position = pinMover.transform.position + new Vector3(0, 2, 0);
                     XLGLight.transform.LookAt(pinCamera);
-                    distance_multiplier = Mathf.Lerp(distance_multiplier, pinMover.transform.position.y - pinCamera.transform.position.y, Time.deltaTime * 4);
+                    distance_multiplier = Mathf.Lerp(distance_multiplier, pinMover.transform.position.y - pinCamera.transform.position.y * 4f, Time.deltaTime * 4);
                 }
 
                 XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);
