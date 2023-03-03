@@ -67,9 +67,36 @@
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="SkaterXL.Gameplay">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Gameplay.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Gear">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Gear.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Map">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Map.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Multiplayer">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Multiplayer.GameMode.SKATE">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.SKATE.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Multiplayer.GameMode.TakingTurns">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TakingTurns.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Multiplayer.GameMode.TrickChallenges">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TrickChallenges.dll</HintPath>
+    </Reference>
     <Reference Include="SkaterXL.Replay">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Replay.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="SkaterXL.ScriptModManager">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.ScriptModManager.dll</HintPath>
+    </Reference>
+    <Reference Include="SkaterXL.Sound">
+      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Sound.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.TrickDetection">
       <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.TrickDetection.dll</HintPath>

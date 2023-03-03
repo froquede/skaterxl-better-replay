@@ -2,6 +2,8 @@
 using UnityEngine;
 using UnityModManagerNet;
 using SkaterXL.Core;
+using SkaterXL.Gameplay;
+using SkaterXL.Sound;
 using ReplayEditor;
 using UnityEngine.SceneManagement;
 using GameManagement;
@@ -12,6 +14,7 @@ using System.Collections.Generic;
 using TMPro;
 using System.IO;
 using System.Linq;
+using HarmonyLib;
 
 namespace BetterReplay
 {
@@ -31,7 +34,7 @@ namespace BetterReplay
 
         public void Start()
         {
-            PlayerController.Instance.pinMover.maxHeight = float.PositiveInfinity;
+            PlayerController.Instances[PlayerController.Instances.Count - 1].pinController.maxHeight = float.PositiveInfinity;
             // GetCookies();
             getReplayEditor();
             getPinCamera();
@@ -55,7 +58,7 @@ namespace BetterReplay
             /*XLGLightComp.cookie = (Main.settings.cookie_texture == "None") ? null : Cookies[Main.settings.cookie_texture];
             if (Main.settings.cookie_texture != EmptyCookieName) XLGLightAdditionalData.SetCookie(Cookies[Main.settings.cookie_texture], new Vector2(1.0f, 1.0f));*/
 
-            mainCamera = PlayerController.Instance.cameraController.gameObject.transform.FindChildRecursively("Gameplay Camera");
+            mainCamera = PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.cameraController.gameObject.transform.FindChildRecursively("Gameplay Camera");
             XLGLight.transform.rotation = mainCamera.rotation;
         }
 
@@ -63,7 +66,7 @@ namespace BetterReplay
         ReplayEditor.KeyframeUIController keyframes;
         void getReplayEditor()
         {
-            Transform main = PlayerController.Instance.skaterController.transform.parent.transform.parent;
+            Transform main = PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.skaterController.transform.parent.transform.parent;
             replay = main.Find("ReplayEditor");
             keyframes = replay.GetComponent<ReplayEditor.ReplayEditorController>().cameraController.keyframeUI;
             replayCamera = replay.FindChildRecursively("VirtualCamera1");
@@ -71,8 +74,8 @@ namespace BetterReplay
 
         void getPinCamera()
         {
-            pinMover = PlayerController.Instance.transform.parent.FindChildRecursively("Pin Mover");
-            pinCamera = PlayerController.Instance.transform.parent.FindChildRecursively("GroundLocationIndicator");
+            pinMover = PlayerController.Instances[PlayerController.Instances.Count - 1].transform.parent.FindChildRecursively("Pin Mover");
+            pinCamera = PlayerController.Instances[PlayerController.Instances.Count - 1].transform.parent.FindChildRecursively("GroundLocationIndicator");
         }
 
         void UpdateSliderHandles()
@@ -89,6 +92,17 @@ namespace BetterReplay
         int frame = 0;
         public void Update()
         {
+            /*foreach (ReplayAudioSourceController replayAudioSourceController in ReplayEditorController.Instance.playbackController.audioSourceControllers)
+            {
+                try
+                {
+                    AudioClip clip = SoundManager.Instance.GetClipForID(replayAudioSourceController.clipID.typeID, replayAudioSourceController.clipID.index);
+                    UnityModManager.Logger.Log(clip.name.ToLower());
+                    replayAudioSourceController.UpdateProperties(ReplayEditorController.Instance.playbackTimeScale);
+                }
+                catch { }
+            }*/
+
             if (light_enabled)
             {
                 if (GameStateMachine.Instance.CurrentState.GetType() == typeof(PlayState))
@@ -110,7 +124,13 @@ namespace BetterReplay
                     distance_multiplier = Mathf.Lerp(distance_multiplier, pinMover.transform.position.y - pinCamera.transform.position.y, Time.deltaTime * 4);
                 }
 
-                XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);                
+                XLGLight.transform.Translate(Main.settings.light_offset, Space.Self);
+            }
+
+            if (GameStateMachine.Instance.CurrentState.GetType() == typeof(ReplayState))
+            {
+                if (Input.GetKey("left")) ReplayEditorController.Instance.playbackController.SetPlaybackTime(ReplayEditorController.Instance.playbackController.CurrentTime - .001f);
+                if (Input.GetKey("right")) ReplayEditorController.Instance.playbackController.SetPlaybackTime(ReplayEditorController.Instance.playbackController.CurrentTime + .001f);
             }
         }
 
@@ -190,7 +210,6 @@ namespace BetterReplay
                 {
                     ReplayEditorController.Instance.playbackController.CurrentTime = ReplayEditorController.Instance.playbackController.ClipEndTime;
                     ReplayEditorController.Instance.cameraController.OnReplayEditorStart();
-                    SoundManager.Instance.StopPowerslideSound(0, 0);
                     state = last_state;
                 }
             }
@@ -201,13 +220,13 @@ namespace BetterReplay
 
             if (Main.settings.double_tap)
             {
-                if(PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Pushing || PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Riding || PlayerController.Instance.currentStateEnum == PlayerController.CurrentState.Impact)
+                if (PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.playerData.currentState == PlayerStateEnum.Pushing || PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.playerData.currentState == PlayerStateEnum.Riding || PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.playerData.currentState == PlayerStateEnum.Impact)
                 {
-                    if(PlayerController.Instance.inputController.player.GetButtonDoublePressDown("Left Stick Button")) ToggleLight();
-                    if (PlayerController.Instance.inputController.player.GetButtonDoublePressHold("Left Stick Button"))
+                    if (PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.inputController.rewiredPlayer.GetButtonDoublePressDown("Left Stick Button")) ToggleLight();
+                    if (PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.inputController.rewiredPlayer.GetButtonDoublePressHold("Left Stick Button"))
                     {
-                        if (PlayerController.Instance.inputController.player.GetButton("RB")) Main.settings.light_intensity += .05f;
-                        if (PlayerController.Instance.inputController.player.GetButton("LB")) Main.settings.light_intensity -= .05f;
+                        if (PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.inputController.rewiredPlayer.GetButton("RB")) Main.settings.light_intensity += .05f;
+                        if (PlayerController.Instances[PlayerController.Instances.Count - 1].gameplay.inputController.rewiredPlayer.GetButton("LB")) Main.settings.light_intensity -= .05f;
                     }
                 }
             }
@@ -217,8 +236,8 @@ namespace BetterReplay
                 ToggleLight();
             }
 
-            PlayerController.Instance.pinMover.MoveSpeed = Main.settings.pin_movespeed;
-            PlayerController.Instance.pinMover.RotateSpeed = Main.settings.pin_rotationspeed;
+            PlayerController.Instances[PlayerController.Instances.Count - 1].pinController.MoveSpeed = Main.settings.pin_movespeed;
+            PlayerController.Instances[PlayerController.Instances.Count - 1].pinController.RotateSpeed = Main.settings.pin_rotationspeed;
         }
 
         public void ToggleLight()
@@ -314,6 +333,7 @@ namespace BetterReplay
         {
             if (Main.settings.disable_animator_tracker) return;
 
+            //var anims = Resources.FindObjectsOfTypeAll(typeof(Animator)) as Animator[];
             var anims = FindObjectsOfType<Animator>();
             int anim_count = 0;
 
@@ -327,6 +347,8 @@ namespace BetterReplay
                 {
                     if (go.name == internals[n]) add = false;
                 }
+
+                if (add) UnityModManager.Logger.Log(anims[i].transform.name);
 
                 AnimationTracker ot = go.gameObject.GetComponent<AnimationTracker>();
                 if (add && ot == null)
