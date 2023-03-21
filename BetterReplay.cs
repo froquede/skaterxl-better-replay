@@ -250,7 +250,7 @@ namespace BetterReplay
             NotificationManager.Instance.ShowNotification($"Light { (light_enabled ? "enabled" : "disabled") }", 1f, false, NotificationManager.NotificationType.Normal, TextAlignmentOptions.TopRight, 0f);
         }
 
-        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)", "UI_Source", "Movement_Foley_Source", "Powerslide_Hits_Source 2", "Powerslide_Loop_Source 2", "Powerslide_Hits_Source", "Powerslide_Loop_Source", "Wheel_Rolling_Loops_High_Source", "Wheel_Rolling_Loop_Low_Source", "Music_Source", "Wheel_Hits_Source", "Grind_Loop_Source", "Deck_Source", "Grind_Hits_Source", "Shoes_Hit_Source", "Shoes_Scrape_Source", "Bearing_Source", "GamePlay", "UI_Audio_Source", "Music(Clone)", "AmbientSounds", "dots", "WithoutProgressVariant" };
+        string[] internals = { "Gameplay Camera", "NewIKAnim", "NewSteezeIK", "NewSkater", "Pin", "Camera Rig", "CenterOfMassPlayer", "Lean Proxy", "Coping Detection", "Skater Target", "Front Truck", "Back Truck", "Skateboard", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "Skater_hand_r", "Skater_ForeArm_r", "Skater_Arm_r", "Skater_hand_l", "Skater_ForeArm_l", "Skater_Arm_l", "Skater_Head", "Skater_Spine2", "Skater_Spine", "Skater_pelvis", "Skater_foot_r", "Skater_Leg_r", "Skater_UpLeg_r", "Skater_foot_l", "Skater_Leg_l", "Skater_UpLeg_l", "WithProgressVariant", "Text (TMP)", "UI_Source", "Movement_Foley_Source", "Powerslide_Hits_Source 2", "Powerslide_Loop_Source 2", "Powerslide_Hits_Source", "Powerslide_Loop_Source", "Wheel_Rolling_Loops_High_Source", "Wheel_Rolling_Loop_Low_Source", "Music_Source", "Wheel_Hits_Source", "Grind_Loop_Source", "Deck_Source", "Grind_Hits_Source", "Shoes_Hit_Source", "Shoes_Scrape_Source", "Bearing_Source", "GamePlay", "UI_Audio_Source", "Music(Clone)", "AmbientSounds", "dots", "WithoutProgressVariant", "Skater", "IKAnim", "Right HandIK", "Left HandIK", "SteezeIK", "GamePlayNew" };
         public void AddObjectTrackers()
         {
             UnityModManager.Logger.Log("Checking Hinges, RigidBodies, Animators, and AudioSources for replay tracking...");
@@ -259,6 +259,7 @@ namespace BetterReplay
             RBTracker();
             AnimatorTracker();
             AudioSourceTracker();
+            WheelTrackers();
         }
 
         public void HingeTracker()
@@ -388,12 +389,42 @@ namespace BetterReplay
                 if (add && ot == null)
                 {
                     go.gameObject.AddComponent<AudioSourceTracker>();
-                    UnityModManager.Logger.Log("AudioSource tracker - " + go.gameObject.name + " " + go.transform.parent.gameObject.name);
+                    UnityModManager.Logger.Log("AudioSource tracker - " + go.gameObject.name);
                     anim_count++;
                 }
             }
 
             if (anim_count > 0 && !Main.settings.disable_messages) MessageSystem.QueueMessage(MessageDisplayData.Type.Success, $"Tracker added - {anim_count} audio sources", 1.5f);
+        }
+
+        public void WheelTrackers()
+        {
+            Transform replay_transform = GameStateMachine.Instance.ReplayObject.transform;
+
+            Transform[] wheels = new Transform[] {
+                PlayerController.Main.gameplay.boardController._visualWheel1,
+                PlayerController.Main.gameplay.boardController._visualWheel2,
+                PlayerController.Main.gameplay.boardController._visualWheel3,
+                PlayerController.Main.gameplay.boardController._visualWheel4,
+            };
+
+            if(GameObject.Find("WheelTrackers"))
+            {
+                Destroy(GameObject.Find("WheelTrackers"));
+            }
+
+            GameObject go = new GameObject("WheelTrackers");
+            DontDestroyOnLoad(go);
+
+            for (int i = 0; i < wheels.Length; i++)
+            {
+
+                TransformTracker t = go.AddComponent<TransformTracker>();
+                t.replay_object = replay_transform.FindChildRecursively("Wheel" + (i + 1)).GetChild(0);
+                t.tracked_object = wheels[i];
+            }
+
+            UnityModManager.Logger.Log("Visual wheel trackers added");
         }
 
         public void DestroyObjectTracker()

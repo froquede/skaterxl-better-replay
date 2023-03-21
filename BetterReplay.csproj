@@ -176,6 +176,7 @@
     <Compile Include="AudioSourceTracker.cs" />
     <Compile Include="BetterReplay.cs" />
     <Compile Include="Main.cs" />
+    <Compile Include="TransformTracker.cs" />
     <Compile Include="ObjectTracker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RapidGUI\Button.cs" />
