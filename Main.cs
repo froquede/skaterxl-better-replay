@@ -44,16 +44,19 @@ namespace BetterReplay
 
         private static void OnGUI(UnityModManager.ModEntry modEntry)
         {
-            if(bg == null)
+            try
             {
-                bg = new Texture2D(1, 1);
-                bg.SetPixels(new[] { new Color(.35f, .35f, .35f, .6f) });
-                bg.Apply();
-                RGUIStyle.button.active.background = bg;
-                RGUIStyle.button.normal.background = bg;
-                RGUIStyle.button.focused.background = bg;
-                RGUIStyle.button.hover.background = bg;
-            }
+                if (bg == null)
+                {
+                    bg = new Texture2D(1, 1);
+                    bg.SetPixels(new[] { new Color(.35f, .35f, .35f, .6f) });
+                    bg.Apply();
+                    RGUIStyle.button.active.background = bg;
+                    RGUIStyle.button.normal.background = bg;
+                    RGUIStyle.button.focused.background = bg;
+                    RGUIStyle.button.hover.background = bg;
+                }
+            } catch { }
 
             GUILayout.Label("   ");
             GUILayout.BeginHorizontal();
@@ -143,6 +146,15 @@ namespace BetterReplay
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(5);
+
+            GUILayout.Box("<b>Options</b>", GUILayout.Height(21f));
+
+            if (RGUI.Button(settings.mini_info, "Mini info menu"))
+            {
+                settings.mini_info = !settings.mini_info;
+                gameObject.hidden = false;
+            }
 
             GUILayout.EndVertical();
 

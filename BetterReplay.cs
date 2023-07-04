@@ -121,7 +121,14 @@ namespace BetterReplay
             else return result;
         }
 
+        void Log(System.Object log)
+        {
+            UnityModManager.Logger.Log(log.ToString());
+        }
+
         System.Random rand = new System.Random();
+        public bool hidden = false;
+        string[] ignore = new string[] { "Show Hide Interface", "Mode", "Use Keyframes" };
         char[] pattern = "mmamammmmammamamaaamammma".ToCharArray();
         public void FixedUpdate()
         {
@@ -148,7 +155,31 @@ namespace BetterReplay
 
             if (GameStateMachine.Instance.CurrentState.GetType() == typeof(ReplayState))
             {
-                UpdateSliderHandles();
+                if (ReplayEditorController.Instance.ReplayUI.activeSelf)
+                {
+                    UpdateSliderHandles();
+
+                    if (!hidden)
+                    {
+                        hidden = true;
+                        Transform[] items = ReplayEditorController.Instance.ReplayUI.transform.Find("Info Panel").GetChildren();
+                        for(int i = 0; i < items.Length; i++)
+                        {
+                            if(Main.settings.mini_info)
+                            {
+                                bool remove = true;
+                                for (int n = 0; n < ignore.Length; n++)
+                                {
+                                    if (items[i].gameObject.name == ignore[n]) remove = false;
+                                }
+
+                                if(remove) items[i].gameObject.SetActive(false);
+                            }
+                            else items[i].gameObject.SetActive(true);
+                        }
+                    }
+                }
+                else hidden = false;
             }
 
             if (light_enabled)
