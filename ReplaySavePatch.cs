@@ -1,18 +1,20 @@
-﻿using BetterReplay;
-using HarmonyLib;
+﻿using HarmonyLib;
 using ReplayEditor;
 using SkaterXL.Data;
 using System;
 
-[HarmonyPatch(typeof(ReplayPlaybackController))]
-[HarmonyPatch("LoadReplayData", new Type[] { typeof(ReplayPlayerRecording), typeof(bool) })]
-public static class LoadReplayDataPatch
+namespace BetterReplay
 {
-    static void Prefix(ref ReplayPlayerRecording data, bool startAtBeginning)
+    [HarmonyPatch(typeof(ReplayPlaybackController))]
+    [HarmonyPatch("LoadReplayData", new Type[] { typeof(ReplayPlayerRecording), typeof(bool) })]
+    public static class ReplaySavePatch
     {
-        if (Main.settings.load_current_customizations)
+        static void Prefix(ref ReplayPlayerRecording data, bool startAtBeginning)
         {
-            data.customizations = PlayerController.Instance.characterCustomizer.CurrentCustomizations;
+            if (Main.settings.load_current_customizations)
+            {
+                data.customizations = PlayerController.Instance.characterCustomizer.CurrentCustomizations;
+            }
         }
     }
 }
