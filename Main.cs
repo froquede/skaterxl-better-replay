@@ -19,6 +19,7 @@ namespace BetterReplay
 
         static bool Unload(UnityModManager.ModEntry modEntry)
         {
+            harmonyInstance?.UnpatchAll(harmonyInstance.Id);
             UnityEngine.Object.Destroy(gameObject);
             return true;
         }
@@ -28,6 +29,8 @@ namespace BetterReplay
             Main.modEntry = modEntry;
 
             harmonyInstance = new Harmony(modEntry.Info.Id);
+            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+
             settings = UnityModManager.ModSettings.Load<Settings>(modEntry);
 
             gameObject = new GameObject().AddComponent<BetterReplay>();
@@ -155,6 +158,20 @@ namespace BetterReplay
                     }
                     GUILayout.EndHorizontal();
                 }
+
+                GUILayout.Space(5);
+
+                GUILayout.Box("<b>Options</b>", GUILayout.Height(21f));
+
+                GUILayout.BeginHorizontal();
+                {
+                    if (RGUI.Button(settings.load_current_customizations, "Load currently equipped gear in saved replays"))
+                    {
+                        settings.load_current_customizations = !settings.load_current_customizations;
+                    }
+                }
+                GUILayout.EndHorizontal();
+                
                 GUILayout.EndVertical();
 
                 GUILayout.BeginVertical(GUILayout.Width(44));

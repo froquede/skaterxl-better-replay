@@ -30,6 +30,8 @@ namespace BetterReplay
         public float pin_movespeed = 10f;
         public float pin_rotationspeed = 180f;
 
+        public bool load_current_customizations = false;
+
         public void OnChange()
         {
             throw new NotImplementedException();
