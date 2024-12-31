@@ -32,68 +32,68 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>E:\SkaterXL\UnityModManager-21-0-22-15a-1610088141\UnityModManager\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityModManager\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BFSUtilities">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\BFSUtilities.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\BFSUtilities.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Cinemachine">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Cinemachine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Cinemachine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="modio.UnityPlugin">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\modio.UnityPlugin.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\modio.UnityPlugin.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Rewired_Core">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Rewired_Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Rewired_Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkaterXL.Core">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Core.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkaterXL.Data">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Data.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Data.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkaterXL.Gear">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Gear.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Gear.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Map">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Map.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Map.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Multiplayer">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Multiplayer.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Multiplayer.GameMode.SKATE">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.SKATE.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.SKATE.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Multiplayer.GameMode.TakingTurns">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TakingTurns.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TakingTurns.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Multiplayer.GameMode.TrickChallenges">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TrickChallenges.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Multiplayer.GameMode.TrickChallenges.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.Replay">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.Replay.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.Replay.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SkaterXL.ScriptModManager">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.ScriptModManager.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.ScriptModManager.dll</HintPath>
     </Reference>
     <Reference Include="SkaterXL.TrickDetection">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\SkaterXL.TrickDetection.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\SkaterXL.TrickDetection.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -105,63 +105,63 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="Unity.RenderPipelines.HighDefinition.Runtime">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Unity.RenderPipelines.HighDefinition.Runtime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AnimationModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.AnimationModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ClothModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.ClothModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.IMGUIModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.IMGUIModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.InputModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.InputModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.PhysicsModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.TextRenderingModule">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.TextRenderingModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityEngine.UI.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityModManager">
-      <HintPath>..\..\..\SteamLibrary\steamapps\common\Skater XL\SkaterXL_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
+      <HintPath>..\..\..\..\..\Games\Skater XL 1.2.2.8\SkaterXL_Data\Managed\UnityModManager\UnityModManager.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -195,6 +195,7 @@
     <Compile Include="RapidGUI\Utilities\UnparsedStr.cs" />
     <Compile Include="RapidGUI\Utilities\WarningLabelNoStyle.cs" />
     <Compile Include="RapidGUI\Utilities\WindowInvoker.cs" />
+    <Compile Include="ReplaySavePatch.cs" />
     <Compile Include="Settings.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -203,16 +204,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>
-      if "$(ConfigurationName)"=="Debug" (
-        copy /Y "$(TargetDir)BetterReplay.dll" "T:\SteamLibrary\steamapps\common\Skater XL\Mods\better-replay\BetterReplay.dll"
-        copy /Y "$(ProjectDir)Info.json" "T:\SteamLibrary\steamapps\common\Skater XL\Mods\better-replay\Info.json"
-      )
-
-      if "$(ConfigurationName)"=="Release" (
-        del /Q /F "T:\SteamLibrary\steamapps\common\Skater XL\Mods\better-replay\"
-        copy /Y "$(TargetDir)BetterReplay.dll" "T:\SteamLibrary\steamapps\common\Skater XL\Mods\better-replay\BetterReplay.dll"
-        copy /Y "$(ProjectDir)Info.json" "T:\SteamLibrary\steamapps\common\Skater XL\Mods\better-replay\Info.json"
-      )
     </PostBuildEvent>
   </PropertyGroup>
 </Project>

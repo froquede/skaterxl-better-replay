@@ -32,6 +32,8 @@ namespace BetterReplay
 
         public bool mini_info = false;
 
+        public bool load_current_customizations = false;
+
         public void OnChange()
         {
             throw new NotImplementedException();
