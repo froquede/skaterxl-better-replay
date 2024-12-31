@@ -11,6 +11,7 @@ using UnityModManagerNet;
 
 namespace BetterReplay
 {
+    /*
     class TransformTrackerStruct
     {
         public List<float> time = new List<float>();
@@ -79,4 +80,5 @@ namespace BetterReplay
             return -1;
         }
     }
+    */
 }

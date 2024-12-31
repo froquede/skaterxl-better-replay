@@ -399,6 +399,7 @@ namespace BetterReplay
 
         public void WheelTrackers()
         {
+            /*
             Transform replay_transform = GameStateMachine.Instance.ReplayObject.transform;
 
             Transform[] wheels = new Transform[] {
@@ -425,6 +426,7 @@ namespace BetterReplay
             }
 
             UnityModManager.Logger.Log("Visual wheel trackers added");
+            */
         }
 
         public void DestroyObjectTracker()
