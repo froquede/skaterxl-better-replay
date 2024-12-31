@@ -259,7 +259,6 @@ namespace BetterReplay
             RBTracker();
             AnimatorTracker();
             AudioSourceTracker();
-            WheelTrackers();
         }
 
         public void HingeTracker()
@@ -395,38 +394,6 @@ namespace BetterReplay
             }
 
             if (anim_count > 0 && !Main.settings.disable_messages) MessageSystem.QueueMessage(MessageDisplayData.Type.Success, $"Tracker added - {anim_count} audio sources", 1.5f);
-        }
-
-        public void WheelTrackers()
-        {
-            /*
-            Transform replay_transform = GameStateMachine.Instance.ReplayObject.transform;
-
-            Transform[] wheels = new Transform[] {
-                PlayerController.Main.gameplay.boardController._visualWheel1,
-                PlayerController.Main.gameplay.boardController._visualWheel2,
-                PlayerController.Main.gameplay.boardController._visualWheel3,
-                PlayerController.Main.gameplay.boardController._visualWheel4,
-            };
-
-            if(GameObject.Find("WheelTrackers"))
-            {
-                Destroy(GameObject.Find("WheelTrackers"));
-            }
-
-            GameObject go = new GameObject("WheelTrackers");
-            DontDestroyOnLoad(go);
-
-            for (int i = 0; i < wheels.Length; i++)
-            {
-
-                TransformTracker t = go.AddComponent<TransformTracker>();
-                t.replay_object = replay_transform.FindChildRecursively("Wheel" + (i + 1)).GetChild(0);
-                t.tracked_object = wheels[i];
-            }
-
-            UnityModManager.Logger.Log("Visual wheel trackers added");
-            */
         }
 
         public void DestroyObjectTracker()
